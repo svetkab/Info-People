@@ -27,8 +27,8 @@
 		292FA615177DFD7500529411 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 292FA5EB177DFD7400529411 /* CoreData.framework */; };
 		292FA61D177DFD7500529411 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 292FA61B177DFD7500529411 /* InfoPlist.strings */; };
 		292FA620177DFD7500529411 /* PeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FA61F177DFD7500529411 /* PeopleTests.m */; };
-		292FA632177E048B00529411 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FA631177E048B00529411 /* Person.m */; };
 		292FA638177E06AB00529411 /* Person+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FA637177E06AB00529411 /* Person+CRUD.m */; };
+		29DEEE7A177E24990048FB60 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DEEE79177E24990048FB60 /* Person.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,10 +68,11 @@
 		292FA61C177DFD7500529411 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		292FA61E177DFD7500529411 /* PeopleTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeopleTests.h; sourceTree = "<group>"; };
 		292FA61F177DFD7500529411 /* PeopleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeopleTests.m; sourceTree = "<group>"; };
-		292FA630177E048B00529411 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
-		292FA631177E048B00529411 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		292FA636177E06AB00529411 /* Person+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Person+CRUD.h"; sourceTree = "<group>"; };
 		292FA637177E06AB00529411 /* Person+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Person+CRUD.m"; sourceTree = "<group>"; };
+		29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "People 2.xcdatamodel"; sourceTree = "<group>"; };
+		29DEEE78177E24990048FB60 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		29DEEE79177E24990048FB60 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,9 +184,9 @@
 		292FA629177E007500529411 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				29DEEE78177E24990048FB60 /* Person.h */,
+				29DEEE79177E24990048FB60 /* Person.m */,
 				292FA602177DFD7400529411 /* People.xcdatamodeld */,
-				292FA630177E048B00529411 /* Person.h */,
-				292FA631177E048B00529411 /* Person.m */,
 				292FA636177E06AB00529411 /* Person+CRUD.h */,
 				292FA637177E06AB00529411 /* Person+CRUD.m */,
 			);
@@ -308,8 +309,8 @@
 				292FA604177DFD7400529411 /* People.xcdatamodeld in Sources */,
 				292FA607177DFD7400529411 /* TCSMasterViewController.m in Sources */,
 				292FA60A177DFD7400529411 /* TCSDetailViewController.m in Sources */,
-				292FA632177E048B00529411 /* Person.m in Sources */,
 				292FA638177E06AB00529411 /* Person+CRUD.m in Sources */,
+				29DEEE7A177E24990048FB60 /* Person.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +491,7 @@
 				292FA625177DFD7500529411 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		292FA626177DFD7500529411 /* Build configuration list for PBXNativeTarget "PeopleTests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +500,7 @@
 				292FA628177DFD7500529411 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
@@ -505,9 +508,10 @@
 		292FA602177DFD7400529411 /* People.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */,
 				292FA603177DFD7400529411 /* People.xcdatamodel */,
 			);
-			currentVersion = 292FA603177DFD7400529411 /* People.xcdatamodel */;
+			currentVersion = 29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */;
 			path = People.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

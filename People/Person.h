@@ -13,8 +13,10 @@
 @interface Person : NSManagedObject
 
 @property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) id image;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * url;
-@property (nonatomic, retain) id image;
+@property (nonatomic, retain) NSNumber * sync;
+@property (nonatomic, retain) NSDate * timeStamp;
 
 @end

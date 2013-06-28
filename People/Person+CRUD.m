@@ -16,6 +16,7 @@
                     imageUrl:(NSString*)url
                        Image:(UIImage*)image
           inManagedObjectContext:(NSManagedObjectContext *)context
+                 syncVersion:(int)syncVersion;
 {
     Person *person = nil;
 
@@ -43,6 +44,9 @@
         [person setEmail:email];
         [person setUrl:url];
         [person setImage:image];
+        [person setSync:[NSNumber numberWithInt:syncVersion]];
+        [person setTimeStamp:[NSDate date]];
+        
         
         NSLog(@"INSERTING name: %@",name);
         
@@ -57,4 +61,47 @@
     return person;
 }
 
++ (int) maxSyncInManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:context];
+    [request setEntity:entity];
+    
+    // Specify that the request should return dictionaries.
+    [request setResultType:NSDictionaryResultType];
+    
+    // Create an expression for the key path.
+    NSExpression *keyPathExpression = [NSExpression expressionForKeyPath:@"sync"];
+    
+    // Create an expression to represent the minimum value at the key path 'creationDate'
+    NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:[NSArray arrayWithObject:keyPathExpression]];
+    
+    // Create an expression description using the minExpression and returning a date.
+    NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
+    
+    // The name is the key that will be used in the dictionary for the return value.
+    [expressionDescription setName:@"maxSync"];
+    [expressionDescription setExpression:maxExpression];
+    [expressionDescription setExpressionResultType:NSInteger64AttributeType];
+    
+    // Set the request's properties to fetch just the property represented by the expressions.
+    [request setPropertiesToFetch:[NSArray arrayWithObject:expressionDescription]];
+    
+    // Execute the fetch.
+    NSError *error = nil;
+    NSArray *objects = [context executeFetchRequest:request error:&error];
+    if (objects == nil) {
+        // Handle the error.
+    }
+    else {
+        if ([objects count] > 0) {
+            NSLog(@"MAX sync: %@", [[objects objectAtIndex:0] valueForKey:@"maxSync"]);
+            
+             NSLog(@"MAX sync: %i", [[[objects objectAtIndex:0] valueForKey:@"maxSync"] intValue]);
+        }
+    }
+
+    return [[[objects objectAtIndex:0] valueForKey:@"maxSync"] intValue];
+    
+}
 @end

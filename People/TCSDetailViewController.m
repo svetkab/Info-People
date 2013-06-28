@@ -32,6 +32,17 @@
 
     if (self.detailItem) {
         self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"email"] description];
+        
+        UIImage * img = [self.detailItem valueForKey:@"image"] ;
+        //
+        UIImageView * imgv = [[UIImageView alloc] initWithImage:img];
+        
+        float delta = self.view.frame.size.width/img.size.width;
+        
+        [imgv setFrame:CGRectMake(0, 0, img.size.width*delta, img.size.height*delta)];
+        
+        
+        [self.view addSubview:imgv];
     }
 }
 

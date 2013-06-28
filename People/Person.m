@@ -12,8 +12,10 @@
 @implementation Person
 
 @dynamic email;
+@dynamic image;
 @dynamic name;
 @dynamic url;
-@dynamic image;
+@dynamic sync;
+@dynamic timeStamp;
 
 @end

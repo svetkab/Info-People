@@ -14,6 +14,8 @@
                    withEmail:(NSString*)email
                     imageUrl:(NSString*)url
                        Image:(UIImage*)image
-      inManagedObjectContext:(NSManagedObjectContext *)context;
+      inManagedObjectContext:(NSManagedObjectContext *)context
+                 syncVersion:(int)syncVersion;
 
++ (int) maxSyncInManagedObjectContext:(NSManagedObjectContext *)context;
 @end

@@ -43,13 +43,16 @@
 
 - (void)insertNewObject:(id)sender
 {
+    [self loadData];
+    
+    /*
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     
     // If appropriate, configure the new managed object.
     // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
+    [newManagedObject setValue:[NSDate date] forKey:@"email"];
     
     // Save the context.
     NSError *error = nil;
@@ -59,6 +62,7 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
+     */
 }
 
 #pragma mark - Table View
@@ -128,14 +132,14 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"email" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:YES];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -221,6 +225,19 @@
 {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[object valueForKey:@"email"] description];
+    
+    cell.detailTextLabel.text = [[object valueForKey:@"name"] description];
+    
+    
+    UIImage * img = [object valueForKey:@"image"] ;
+    //
+  //  UIImageView * imgv = [[UIImageView alloc] initWithImage:img];
+    
+ //   float delta = self.view.frame.size.width/img.size.width;
+    
+  //  [imgv setFrame:CGRectMake(0, 0, img.size.width*delta, img.size.height*delta)];
+    
+    [cell.imageView setImage:img];
 }
 
 
@@ -228,6 +245,13 @@
 -(void) loadData
 {
     
+    int maxSync = [Person maxSyncInManagedObjectContext:self.managedObjectContext];
+    
+    NSLog(@"maxSync%i", maxSync);
+    
+    _syncVersion = maxSync + 1;
+    
+
     [self loadDataFromURL:[NSURL URLWithString:@"http://code.laksg.com/challenge/api/people/"]];
     
 }
@@ -260,22 +284,22 @@
         dispatch_async(dispatch_get_global_queue(
                                                  DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-            UIImage * image = [self loadImageFromURL:[personDesc objectForKey:@"url"]];
+            UIImage * image = [self loadImageFromURL:[personDesc objectForKey:@"avatar_url"]];
             
             
             dispatch_async(dispatch_get_main_queue(), ^(){
             
                 [Person insertNewPerson:[personDesc objectForKey:@"name"]
                               withEmail:[personDesc objectForKey:@"email"]
-                               imageUrl:[personDesc objectForKey:@"url"]
+                               imageUrl:[personDesc objectForKey:@"avatar_url"]
                                   Image:image
-                 inManagedObjectContext:[self.fetchedResultsController managedObjectContext]];
+                 inManagedObjectContext:[self.fetchedResultsController managedObjectContext]
+                 syncVersion:_syncVersion];
                 
             });
             
         });
-        
-        
+
         
     }
     
