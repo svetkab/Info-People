@@ -10,6 +10,8 @@
 
 #import "TCSDetailViewController.h"
 
+#import "Person+CRUD.h"
+
 @interface TCSMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -24,6 +26,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self loadData];
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
@@ -131,7 +135,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"email" ascending:NO];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -216,7 +220,73 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
+    cell.textLabel.text = [[object valueForKey:@"email"] description];
+}
+
+
+////////
+-(void) loadData
+{
+    
+    [self loadDataFromURL:[NSURL URLWithString:@"http://code.laksg.com/challenge/api/people/"]];
+    
+}
+-(void) loadDataFromURL:(NSURL*)url
+
+{
+    dispatch_async(dispatch_get_global_queue(
+                                             DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        url];
+        [self performSelectorOnMainThread:@selector(extactDataFromJson:)
+                               withObject:data waitUntilDone:YES];
+    });
+}
+- (void)extactDataFromJson:(NSData *)responseData {
+    
+    NSError* error;
+    NSArray* json = [NSJSONSerialization
+                     JSONObjectWithData:responseData              
+                     options:kNilOptions
+                     error:&error];
+    
+    NSLog(@"json%@",json);
+    
+    
+
+    
+    for (NSDictionary *personDesc in json) {
+        
+        dispatch_async(dispatch_get_global_queue(
+                                                 DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            UIImage * image = [self loadImageFromURL:[personDesc objectForKey:@"url"]];
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^(){
+            
+                [Person insertNewPerson:[personDesc objectForKey:@"name"]
+                              withEmail:[personDesc objectForKey:@"email"]
+                               imageUrl:[personDesc objectForKey:@"url"]
+                                  Image:image
+                 inManagedObjectContext:[self.fetchedResultsController managedObjectContext]];
+                
+            });
+            
+        });
+        
+        
+        
+    }
+    
+
+}
+-(UIImage*) loadImageFromURL:(NSString*) url
+{
+    //  NSURL *url = [NSURL URLWithString:@"https://sphotos-a.xx.fbcdn.net/hphotos-prn1/1016116_10151693710332996_1203454467_n.jpg"];
+    NSURL *nsurl = [NSURL URLWithString:url];
+    NSData *data = [NSData dataWithContentsOfURL:nsurl];
+    return [[UIImage alloc] initWithData:data scale:1.0];
 }
 
 @end
