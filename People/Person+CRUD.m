@@ -104,4 +104,19 @@
     return [[[objects objectAtIndex:0] valueForKey:@"maxSync"] intValue];
     
 }
++(int) recordsInSync:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sync = %@",[NSNumber numberWithInt: syncVersion]];
+    [fetchRequest setPredicate:predicate];
+    
+    int records = [context countForFetchRequest:fetchRequest error:&error];
+    
+    return records;
+}
 @end

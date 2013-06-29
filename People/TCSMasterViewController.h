@@ -9,12 +9,19 @@
 #import <UIKit/UIKit.h>
 
 #import <CoreData/CoreData.h>
+#import "TCSRequestDataController.h"
 
-@interface TCSMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+
+@interface TCSMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, DataReloadDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-@property (assign, nonatomic) int syncVersion;
+
+
+@property (strong, nonatomic) UILabel * loadProccessDesc;
+
+@property (strong, nonatomic) TCSRequestDataController * requestDataController;
+
 
 @end

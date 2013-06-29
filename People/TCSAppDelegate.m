@@ -9,6 +9,7 @@
 #import "TCSAppDelegate.h"
 
 #import "TCSMasterViewController.h"
+#import "TCSRequestDataController.h"
 
 @implementation TCSAppDelegate
 
@@ -22,6 +23,15 @@
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     TCSMasterViewController *controller = (TCSMasterViewController *)navigationController.topViewController;
     controller.managedObjectContext = self.managedObjectContext;
+    
+    TCSRequestDataController * requestDataController = [[TCSRequestDataController alloc] init];
+    
+    requestDataController.managedObjectContext = self.managedObjectContext;
+    
+    controller.requestDataController = requestDataController;
+    
+    [requestDataController loadData];
+    
     return YES;
 }
 							

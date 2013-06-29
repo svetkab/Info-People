@@ -18,4 +18,6 @@
                  syncVersion:(int)syncVersion;
 
 + (int) maxSyncInManagedObjectContext:(NSManagedObjectContext *)context;
++ (int) recordsInSync:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context;
+
 @end

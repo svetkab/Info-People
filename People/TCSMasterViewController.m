@@ -10,7 +10,7 @@
 
 #import "TCSDetailViewController.h"
 
-#import "Person+CRUD.h"
+
 
 @interface TCSMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -26,8 +26,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
     
-    [self loadData];
+    _loadProccessDesc = [[UILabel alloc] initWithFrame:CGRectMake(30.0,30.0, 250.0, 30.0)];
+    
+    [_loadProccessDesc setText:@"LALALA"];
+    
+    [_loadProccessDesc setTextColor:[UIColor blackColor]];
+    
+    _loadProccessDesc.font =[UIFont fontWithName:@"Chalkduster" size:24];
+    
+    
+    [_loadProccessDesc setBackgroundColor:[UIColor whiteColor]];
+    
+    [self.view addSubview:_loadProccessDesc];
+    
+    
+    
+    _requestDataController.dataReloadDelegate = self;
+    
+    
+
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
@@ -43,7 +62,7 @@
 
 - (void)insertNewObject:(id)sender
 {
-    [self loadData];
+    [_requestDataController loadData];
     
     /*
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
@@ -104,6 +123,8 @@
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
+        
+        [self.tableView reloadData];
     }   
 }
 
@@ -160,7 +181,7 @@
     
     return _fetchedResultsController;
 }    
-
+/*
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView beginUpdates];
@@ -188,7 +209,7 @@
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+         //   [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeDelete:
@@ -196,12 +217,12 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+          //  [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+          //  [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+          //  [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }
@@ -210,16 +231,18 @@
 {
     [self.tableView endUpdates];
 }
+*/
 
-/*
 // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
  
  - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
+  //  [self.tableView reloadData];
+
+
 }
- */
+
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
@@ -229,88 +252,20 @@
     cell.detailTextLabel.text = [[object valueForKey:@"name"] description];
     
     
-    UIImage * img = [object valueForKey:@"image"] ;
-    //
-  //  UIImageView * imgv = [[UIImageView alloc] initWithImage:img];
-    
- //   float delta = self.view.frame.size.width/img.size.width;
-    
-  //  [imgv setFrame:CGRectMake(0, 0, img.size.width*delta, img.size.height*delta)];
+    UIImage * img = [object valueForKey:@"image"];
     
     [cell.imageView setImage:img];
 }
 
 
-////////
--(void) loadData
+-(void)createUpdateDoneNotification
 {
     
-    int maxSync = [Person maxSyncInManagedObjectContext:self.managedObjectContext];
-    
-    NSLog(@"maxSync%i", maxSync);
-    
-    _syncVersion = maxSync + 1;
-    
-
-    [self loadDataFromURL:[NSURL URLWithString:@"http://code.laksg.com/challenge/api/people/"]];
-    
+    [self.tableView reloadData];
 }
--(void) loadDataFromURL:(NSURL*)url
-
+-(void) showAlert
 {
-    dispatch_async(dispatch_get_global_queue(
-                                             DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData* data = [NSData dataWithContentsOfURL:
-                        url];
-        [self performSelectorOnMainThread:@selector(extactDataFromJson:)
-                               withObject:data waitUntilDone:YES];
-    });
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"PROBLEM" message:@"Online data is not available. Could be a connection problem." delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil];
+    [alert show];
 }
-- (void)extactDataFromJson:(NSData *)responseData {
-    
-    NSError* error;
-    NSArray* json = [NSJSONSerialization
-                     JSONObjectWithData:responseData              
-                     options:kNilOptions
-                     error:&error];
-    
-    NSLog(@"json%@",json);
-    
-    
-
-    
-    for (NSDictionary *personDesc in json) {
-        
-        dispatch_async(dispatch_get_global_queue(
-                                                 DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-            UIImage * image = [self loadImageFromURL:[personDesc objectForKey:@"avatar_url"]];
-            
-            
-            dispatch_async(dispatch_get_main_queue(), ^(){
-            
-                [Person insertNewPerson:[personDesc objectForKey:@"name"]
-                              withEmail:[personDesc objectForKey:@"email"]
-                               imageUrl:[personDesc objectForKey:@"avatar_url"]
-                                  Image:image
-                 inManagedObjectContext:[self.fetchedResultsController managedObjectContext]
-                 syncVersion:_syncVersion];
-                
-            });
-            
-        });
-
-        
-    }
-    
-
-}
--(UIImage*) loadImageFromURL:(NSString*) url
-{
-    //  NSURL *url = [NSURL URLWithString:@"https://sphotos-a.xx.fbcdn.net/hphotos-prn1/1016116_10151693710332996_1203454467_n.jpg"];
-    NSURL *nsurl = [NSURL URLWithString:url];
-    NSData *data = [NSData dataWithContentsOfURL:nsurl];
-    return [[UIImage alloc] initWithData:data scale:1.0];
-}
-
 @end
