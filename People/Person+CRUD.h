@@ -10,7 +10,7 @@
 
 @interface Person (CRUD)
 
-+ (Person *) insertNewPerson:(NSString*)name
++ (Person *) insertUpdatePerson:(NSString*)name
                    withEmail:(NSString*)email
                     imageUrl:(NSString*)url
                        Image:(UIImage*)image
@@ -19,5 +19,5 @@
 
 + (int) maxSyncInManagedObjectContext:(NSManagedObjectContext *)context;
 + (int) recordsInSync:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context;
-
++ (void) deleteRecordsNotInCurrent:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context;
 @end

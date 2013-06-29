@@ -11,7 +11,7 @@
 @implementation Person (CRUD)
 
 
-+ (Person *) insertNewPerson:(NSString*)name
++ (Person *) insertUpdatePerson:(NSString*)name
                    withEmail:(NSString*)email
                     imageUrl:(NSString*)url
                        Image:(UIImage*)image
@@ -32,9 +32,28 @@
     NSArray *matches = [context executeFetchRequest:fetchRequest error:&error];
     
     
-    if (!matches || ([matches  count]>0)){
+    if (!matches){
         //HANDLE ERROR??
         return nil;
+    }else if ([matches  count]>0){
+        for (Person *match in matches) {
+                        
+            [match setName:name];
+            [match setUrl:url];
+            [match setImage:image];
+            [match setSync:[NSNumber numberWithInt:syncVersion]];
+            [match setTimeStamp:[NSDate date]];
+            
+            
+            NSLog(@"UPDATING name: %@",name);
+            
+
+        }
+        if (![context save:&error]) {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
+        }
     }else if ([matches count] == 0) {
         
         
@@ -118,5 +137,33 @@
     int records = [context countForFetchRequest:fetchRequest error:&error];
     
     return records;
+}
++(void) deleteRecordsNotInCurrent:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSError *error=nil;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sync <> %@",[NSNumber numberWithInt: syncVersion]];
+    [fetchRequest setPredicate:predicate];
+
+    NSArray *matches = [context executeFetchRequest:fetchRequest error:&error];
+    
+    
+    if (!matches){
+        //HANDLE ERROR??
+    }else{
+        for (Person *match in matches) {
+            [context deleteObject:match];
+        }
+    }
+
+    if (![context save:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    }
 }
 @end
