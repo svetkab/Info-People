@@ -10,6 +10,122 @@
 
 @implementation Person (CRUD)
 
++ (Person *) insertUpdatePerson:(NSString*)name
+                      withEmail:(NSString*)email
+                       imageUrl:(NSString*)url
+         inManagedObjectContext:(NSManagedObjectContext *)context
+                    syncVersion:(int)syncVersion;
+{
+    Person *person = nil;
+    
+    
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:context];
+	[fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"email = %@", email];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *matches = [context executeFetchRequest:fetchRequest error:&error];
+    
+    
+    if (!matches || [matches  count]>1){
+        //HANDLE ERROR??
+        return nil;
+    }else if ([matches  count]==1){
+        for (Person *match in matches) {
+            
+            [match setName:name];
+            
+            
+            if (match.url != url) {
+                person = match;
+            }
+            
+            [match setUrl:url];
+            
+            [match setSync:[NSNumber numberWithInt:syncVersion]];
+            [match setTimeStamp:[NSDate date]];
+            
+            
+            NSLog(@"UPDATING name: %@",name);
+            
+            
+        }
+        if (![context save:&error]) {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
+        }
+    }else if ([matches count] == 0) {
+        
+        
+        person = [NSEntityDescription insertNewObjectForEntityForName:@"Person" inManagedObjectContext:context];
+        
+        [person setName:name];
+        [person setEmail:email];
+        [person setUrl:url];
+        [person setSync:[NSNumber numberWithInt:syncVersion]];
+        [person setTimeStamp:[NSDate date]];
+        
+        
+        NSLog(@"INSERTING name: %@",name);
+        
+        if (![context save:&error]) {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
+        }
+        
+    }
+    
+    return person;
+}
+////
+
++ (void) updatePersonWithEmail:(NSString*)email
+                          newImage:(UIImage*)image
+         inManagedObjectContext:(NSManagedObjectContext *)context
+                    syncVersion:(int)syncVersion;
+{
+
+    
+    
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:context];
+	[fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"email = %@", email];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *matches = [context executeFetchRequest:fetchRequest error:&error];
+    
+
+        for (Person *match in matches) {
+            
+            [match setImage:image];
+            
+            [match setSync:[NSNumber numberWithInt:syncVersion]];
+       //     [match setTimeStamp:[NSDate date]];
+            
+            
+            NSLog(@"UPDATING IMAGE FOR name: %@",match.name);
+            
+            
+        }
+    
+        if (![context save:&error]) {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
+        }
+  
+}
+
+
+/////
 
 + (Person *) insertUpdatePerson:(NSString*)name
                    withEmail:(NSString*)email
@@ -138,6 +254,26 @@
     
     return records;
 }
++(NSArray*) allImagesURLsInManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSError *error=nil;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    [fetchRequest setResultType:NSDictionaryResultType];
+    
+    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:@"url"]];
+    
+    NSArray *matches = [context executeFetchRequest:fetchRequest error:&error];
+     
+     NSLog(@"URLS:%@", matches);
+    
+     return matches;
+    
+}
+
 +(void) deleteRecordsNotInCurrent:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSError *error=nil;

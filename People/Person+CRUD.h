@@ -11,6 +11,12 @@
 @interface Person (CRUD)
 
 + (Person *) insertUpdatePerson:(NSString*)name
+                      withEmail:(NSString*)email
+                       imageUrl:(NSString*)url
+         inManagedObjectContext:(NSManagedObjectContext *)context
+                    syncVersion:(int)syncVersion;
+
++ (Person *) insertUpdatePerson:(NSString*)name
                    withEmail:(NSString*)email
                     imageUrl:(NSString*)url
                        Image:(UIImage*)image
@@ -20,4 +26,13 @@
 + (int) maxSyncInManagedObjectContext:(NSManagedObjectContext *)context;
 + (int) recordsInSync:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context;
 + (void) deleteRecordsNotInCurrent:(int)syncVersion InManagedObjectContext:(NSManagedObjectContext *)context;
+
++ (NSArray*) allImagesURLsInManagedObjectContext:(NSManagedObjectContext *)context;
+
+
++ (void) updatePersonWithEmail:(NSString*)email
+                          newImage:(UIImage*)image
+            inManagedObjectContext:(NSManagedObjectContext *)context
+                       syncVersion:(int)syncVersion;
+
 @end

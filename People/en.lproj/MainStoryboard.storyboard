@@ -4,35 +4,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="oeJ-Ae-SnL">
-            <objects>
-                <viewController autoresizesArchivedViewToFullSize="NO" id="1Np-Sc-ArE" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ep4-U4-gPb">
-                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="afasdafsafaf" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYC-JD-8B3">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="97" id="41Y-WA-niV"/>
-                                    <constraint firstAttribute="width" constant="226" id="kRW-KB-tNw"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="nYC-JD-8B3" firstAttribute="top" secondItem="ep4-U4-gPb" secondAttribute="top" constant="155" id="AFh-zY-vdS"/>
-                            <constraint firstItem="nYC-JD-8B3" firstAttribute="leading" secondItem="ep4-U4-gPb" secondAttribute="leading" constant="37" id="c7J-sk-0Qj"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MY2-oI-PaV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-494" y="-115"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="11">
             <objects>
@@ -48,10 +19,10 @@
             </objects>
             <point key="canvasLocation" x="-1" y="59"/>
         </scene>
-        <!--Master View Controller - Master-->
+        <!--Master View Controller - People-->
         <scene sceneID="18">
             <objects>
-                <tableViewController storyboardIdentifier="" title="Master" id="12" customClass="TCSMasterViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="" title="People" id="12" customClass="TCSMasterViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="13">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,7 +64,16 @@
                             <outlet property="delegate" destination="12" id="15"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="36"/>
+                    <navigationItem key="navigationItem" title="Master" id="36">
+                        <barButtonItem key="rightBarButtonItem" title="Sync" id="PkJ-n1-0cE">
+                            <connections>
+                                <action selector="syncWithSource:" destination="12" id="MWf-wR-kCy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="syncButton" destination="PkJ-n1-0cE" id="uEr-ln-sUf"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="17" sceneMemberID="firstResponder"/>
             </objects>

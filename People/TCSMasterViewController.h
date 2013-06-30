@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
+- (IBAction)syncWithSource:(id)sender;
 
 @property (strong, nonatomic) UILabel * loadProccessDesc;
 

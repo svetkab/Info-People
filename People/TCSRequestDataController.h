@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TCSUrlReachabilityWatcher.h"
 
 @protocol DataReloadDelegate <NSObject>
 
--(void)createUpdateDoneNotification;
--(void) showAlert;
+-(void) createUpdateDoneNotification;
+-(void) indicateconnectionProblem:(int)reconnectionInterval;
 @end
 
 @interface TCSRequestDataController : NSObject
@@ -22,6 +23,15 @@
 
 @property (weak, nonatomic) id <DataReloadDelegate> dataReloadDelegate;
 
+@property (strong, nonatomic) TCSUrlReachabilityWatcher *urlReachabilityWatcher;
+
+@property (assign, nonatomic) BOOL reTry;
+
+@property (strong, nonatomic) NSArray * imagesUrls;
+
+@property (strong, nonatomic) NSMutableArray * personsWithNewImageUrl;
+
+@property (strong, nonatomic) NSMutableDictionary * personImages;
 
 -(void) loadData;
 

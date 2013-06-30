@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2902E792177E6C2D003B5B70 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2902E791177E6C2D003B5B70 /* SystemConfiguration.framework */; };
+		2902E799177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902E798177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m */; };
 		292FA5E6177DFD7400529411 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 292FA5E5177DFD7400529411 /* UIKit.framework */; };
 		292FA5E8177DFD7400529411 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 292FA5E7177DFD7400529411 /* Foundation.framework */; };
 		292FA5EA177DFD7400529411 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 292FA5E9177DFD7400529411 /* CoreGraphics.framework */; };
@@ -44,6 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2902E791177E6C2D003B5B70 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		2902E797177E93B5003B5B70 /* TCSUrlReachabilityWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSUrlReachabilityWatcher.h; sourceTree = "<group>"; };
+		2902E798177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSUrlReachabilityWatcher.m; sourceTree = "<group>"; };
 		292FA5E2177DFD7400529411 /* People.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = People.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		292FA5E5177DFD7400529411 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		292FA5E7177DFD7400529411 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -72,7 +77,7 @@
 		292FA61F177DFD7500529411 /* PeopleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeopleTests.m; sourceTree = "<group>"; };
 		292FA636177E06AB00529411 /* Person+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Person+CRUD.h"; sourceTree = "<group>"; };
 		292FA637177E06AB00529411 /* Person+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Person+CRUD.m"; sourceTree = "<group>"; };
-		29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "People 2.xcdatamodel"; sourceTree = "<group>"; };
+		29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "People 2.xcdatamodel"; sourceTree = "<group>"; };
 		29DEEE78177E24990048FB60 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		29DEEE79177E24990048FB60 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		29DEEE7B177E48F60048FB60 /* TCSStartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSStartViewController.h; sourceTree = "<group>"; };
@@ -86,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2902E792177E6C2D003B5B70 /* SystemConfiguration.framework in Frameworks */,
 				292FA5E6177DFD7400529411 /* UIKit.framework in Frameworks */,
 				292FA5E8177DFD7400529411 /* Foundation.framework in Frameworks */,
 				292FA5EA177DFD7400529411 /* CoreGraphics.framework in Frameworks */,
@@ -129,6 +135,7 @@
 		292FA5E4177DFD7400529411 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2902E791177E6C2D003B5B70 /* SystemConfiguration.framework */,
 				292FA5E5177DFD7400529411 /* UIKit.framework */,
 				292FA5E7177DFD7400529411 /* Foundation.framework */,
 				292FA5E9177DFD7400529411 /* CoreGraphics.framework */,
@@ -154,6 +161,8 @@
 				29DEEE7C177E48F60048FB60 /* TCSStartViewController.m */,
 				29DEEE7E177E4F3B0048FB60 /* TCSRequestDataController.h */,
 				29DEEE7F177E4F3B0048FB60 /* TCSRequestDataController.m */,
+				2902E797177E93B5003B5B70 /* TCSUrlReachabilityWatcher.h */,
+				2902E798177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m */,
 			);
 			path = People;
 			sourceTree = "<group>";
@@ -323,6 +332,7 @@
 				29DEEE7A177E24990048FB60 /* Person.m in Sources */,
 				29DEEE7D177E48F60048FB60 /* TCSStartViewController.m in Sources */,
 				29DEEE80177E4F3C0048FB60 /* TCSRequestDataController.m in Sources */,
+				2902E799177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,7 +407,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -421,7 +431,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -434,6 +444,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "People/People-Prefix.pch";
 				INFOPLIST_FILE = "People/People-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -445,6 +456,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "People/People-Prefix.pch";
 				INFOPLIST_FILE = "People/People-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
