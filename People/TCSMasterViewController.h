@@ -11,12 +11,14 @@
 #import <CoreData/CoreData.h>
 #import "TCSRequestDataController.h"
 
+@class TCSWelcomeViewController;
 
 @interface TCSMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, DataReloadDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+@property (strong, nonatomic) TCSWelcomeViewController * welcomeViewController;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *syncButton;
 - (IBAction)syncWithSource:(id)sender;

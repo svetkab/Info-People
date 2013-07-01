@@ -12,7 +12,7 @@
 @protocol DataReloadDelegate <NSObject>
 
 -(void) updateViewAfterSync;
--(void) indicateconnectionProblem:(int)reconnectionInterval;
+-(void) indicateconnectionProblem;
 @end
 
 @interface TCSRequestDataController : NSObject

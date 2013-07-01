@@ -10,7 +10,7 @@
 
 #import "TCSDetailViewController.h"
 
-
+#import "TCSWelcomeViewController.h"
 
 @interface TCSMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -28,21 +28,7 @@
     [super viewDidLoad];
    
     _allowEditRows = YES;
-   /*
-    _loadProccessDesc = [[UILabel alloc] initWithFrame:CGRectMake(30.0,30.0, 250.0, 30.0)];
-    
-    [_loadProccessDesc setText:@"Welcome to People. "];
-    
-    [_loadProccessDesc setTextColor:[UIColor blackColor]];
-    
-    _loadProccessDesc.font =[UIFont fontWithName:@"Chalkduster" size:24];
-    
-    
-    [_loadProccessDesc setBackgroundColor:[UIColor whiteColor]];
-    
-    [self.view addSubview:_loadProccessDesc];
-    
-    */
+   
     
     _requestDataController.dataReloadDelegate = self;
     
@@ -51,11 +37,16 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-    //??
-    //[_requestDataController loadData];
     
-   //?? [self syncWithSource:nil];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"sync"] intValue] == 0) {
+        
+        [self syncWithSource:nil];
+        
+        _welcomeViewController = [[TCSWelcomeViewController alloc] init];
+        
+        [self presentModalViewController:_welcomeViewController animated:NO];
 
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,7 +70,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -240,6 +231,8 @@
 
 -(void)updateViewAfterSync
 {
+    [self dismissViewControllerAnimated:NO completion:nil];
+    
     _syncButton.title = @"Sync";
     [_syncButton setEnabled:YES];
     
@@ -250,16 +243,12 @@
     
     [self.tableView reloadData];
 }
--(void) indicateconnectionProblem:(int)reconnectionInterval
+-(void) indicateconnectionProblem
 {
     _syncButton.title = @"Off-line";
 
-    
-    if (reconnectionInterval>10) {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"PROBLEM" message:@"Online data is not available. Could be a connection problem." delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil];
-        [alert show];
-    }
+    _allowEditRows = YES;
+    [self.editButtonItem setEnabled:YES];
 
 }
 - (IBAction)syncWithSource:(id)sender {

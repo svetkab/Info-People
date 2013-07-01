@@ -20,6 +20,8 @@
     if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateImagesInDB) name:@"AllImagesLoaded" object:nil];
+        
+        _urlReachabilityWatcher = [[TCSUrlReachabilityWatcher alloc] init];
     }
     
     return self;
@@ -27,7 +29,11 @@
 ////////
 -(void) loadData
 {
-    
+    if (_urlReachabilityWatcher.reconnectionInterval==4) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"PROBLEM" message:@"Online data is not available. Could be a connection problem." delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil];
+        [alert show];
+    }
 
     _reTry = YES;
     int maxSync = [Person maxSyncInManagedObjectContext:self.managedObjectContext];
@@ -35,8 +41,6 @@
     NSLog(@"maxSync%i", maxSync);
     
     _syncVersion = maxSync + 1;
-    
-    _urlReachabilityWatcher = [[TCSUrlReachabilityWatcher alloc] init];
     
     _imagesUrls = [Person allImagesURLsInManagedObjectContext:self.managedObjectContext];
     
@@ -66,16 +70,16 @@
 
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^(){
-                        /*
+                        
                         _reTry = YES;
                         [_urlReachabilityWatcher setNextCheck];
                         
-                        [_dataReloadDelegate indicateconnectionProblem:_urlReachabilityWatcher.reconnectionInterval ];
+                        [_dataReloadDelegate indicateconnectionProblem];
                         [NSTimer scheduledTimerWithTimeInterval:_urlReachabilityWatcher.reconnectionInterval target:self
                                                        selector:@selector(loadData)
                                                        userInfo:nil
                                                         repeats:NO];
-                         */
+                         
                     });
                 }
         
@@ -84,6 +88,7 @@
     dispatch_release(loadJsonQueue);
     
 }
+
 - (void)extactDataFromJson:(NSData *)responseData {
     
     _personsWithNewImageUrl = [NSMutableArray array];
@@ -143,6 +148,7 @@
         
     }];
         dispatch_async(dispatch_get_main_queue(), ^(){
+            [[NSUserDefaults standardUserDefaults] setInteger:1  forKey: @"sync"];
             [_dataReloadDelegate updateViewAfterSync];
 
         });
@@ -153,6 +159,8 @@
 }
 -(void) loadNewImages
 {
+    NSMutableArray * peopleWithCorruptImages = [NSMutableArray array];
+    
     NSLog(@"loadNewImages");
     if (_personsWithNewImageUrl.count == 0) {
         [self sentEventAllImagesLoaded];
@@ -163,7 +171,16 @@
             dispatch_async(dispatch_get_global_queue(
                                                      DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
-                UIImage * image = [self loadImageFromURL:person.url];
+                 UIImage * image = [self loadImageFromURL:person.url];
+                
+                //test:
+                //UIImage * image = [self loadImageFromURL:@"www.lala"];
+                
+                if (image==nil) {
+                    [peopleWithCorruptImages addObject:person];
+                    
+                    image = [[UIImage alloc] init];
+                }
                 
                 
                 dispatch_async(dispatch_get_main_queue(), ^(){
@@ -185,9 +202,20 @@
 
 -(UIImage*) loadImageFromURL:(NSString*) url
 {
+    
+    
     NSURL *nsurl = [NSURL URLWithString:url];
     NSData *data = [NSData dataWithContentsOfURL:nsurl];
-    return [[UIImage alloc] initWithData:data scale:1.0];
+    if (data!=nil) {
+        UIImage * img = [[UIImage alloc] initWithData:data scale:1.0];
+
+        return img;
+
+        
+    }else{
+        return nil;
+    }
+   
 }
 
 

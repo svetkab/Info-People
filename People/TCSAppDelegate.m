@@ -20,6 +20,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    NSDictionary *userDefaultsDefaults = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0],@"sync",nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     TCSMasterViewController *controller = (TCSMasterViewController *)navigationController.topViewController;
     controller.managedObjectContext = self.managedObjectContext;
@@ -29,8 +32,6 @@
     requestDataController.managedObjectContext = self.managedObjectContext;
     
     controller.requestDataController = requestDataController;
-    
-    [requestDataController loadData];
     
     return YES;
 }
