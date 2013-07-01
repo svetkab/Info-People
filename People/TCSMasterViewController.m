@@ -27,10 +27,11 @@
 {
     [super viewDidLoad];
    
-    
+    _allowEditRows = YES;
+   /*
     _loadProccessDesc = [[UILabel alloc] initWithFrame:CGRectMake(30.0,30.0, 250.0, 30.0)];
     
-    [_loadProccessDesc setText:@"LALALA"];
+    [_loadProccessDesc setText:@"Welcome to People. "];
     
     [_loadProccessDesc setTextColor:[UIColor blackColor]];
     
@@ -41,7 +42,7 @@
     
     [self.view addSubview:_loadProccessDesc];
     
-    
+    */
     
     _requestDataController.dataReloadDelegate = self;
     
@@ -49,6 +50,11 @@
 
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    
+    //??
+    //[_requestDataController loadData];
+    
+   //?? [self syncWithSource:nil];
 
 }
 
@@ -81,7 +87,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return _allowEditRows;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -98,7 +104,6 @@
             abort();
         }
         
-     //--   [self.tableView reloadData];
     }   
 }
 
@@ -134,7 +139,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"email" ascending:YES];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -233,10 +238,15 @@
 }
 
 
--(void)createUpdateDoneNotification
+-(void)updateViewAfterSync
 {
     _syncButton.title = @"Sync";
     [_syncButton setEnabled:YES];
+    
+    _allowEditRows = YES;
+    [self.editButtonItem setEnabled:YES];
+    
+    self.fetchedResultsController = nil;
     
     [self.tableView reloadData];
 }
@@ -254,6 +264,8 @@
 }
 - (IBAction)syncWithSource:(id)sender {
     
+    _allowEditRows = NO;
+    [self.editButtonItem setEnabled:NO];
     _syncButton.title = @"Sync In Proccess";
     [_syncButton setEnabled:NO];
     [_requestDataController loadData];

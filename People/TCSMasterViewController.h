@@ -25,5 +25,5 @@
 
 @property (strong, nonatomic) TCSRequestDataController * requestDataController;
 
-
+@property (assign, nonatomic) BOOL allowEditRows;
 @end

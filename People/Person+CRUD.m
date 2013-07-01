@@ -268,7 +268,7 @@
     
     NSArray *matches = [context executeFetchRequest:fetchRequest error:&error];
      
-     NSLog(@"URLS:%@", matches);
+ //    NSLog(@"URLS:%@", matches);
     
      return matches;
     

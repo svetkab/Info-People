@@ -46,14 +46,22 @@
 }
 -(void) loadDataFromURL:(NSURL*)url
 {
-    dispatch_async(dispatch_get_global_queue(
-                                             DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_queue_t loadJsonQueue = dispatch_queue_create( "com.tuxedocat.people.loadjson", NULL );
+
+    
+    dispatch_async(loadJsonQueue, ^{
                 NSData* data = [NSData dataWithContentsOfURL:
                         url];
         
                 if (data!=nil) {
-                    [self performSelectorOnMainThread:@selector(extactDataFromJson:)
-                                   withObject:data waitUntilDone:YES];
+                    
+                    dispatch_queue_t extactDataFromJsonQueue = dispatch_queue_create( "com.tuxedocat.people.extactDataFromJson", NULL );
+                    
+                    dispatch_async(extactDataFromJsonQueue,  ^(){
+                        [self extactDataFromJson:data];
+                    });
+                    
+                    dispatch_release(extactDataFromJsonQueue);
                     _reTry = NO;
 
                 } else {
@@ -72,6 +80,9 @@
                 }
         
             });
+    
+    dispatch_release(loadJsonQueue);
+    
 }
 - (void)extactDataFromJson:(NSData *)responseData {
     
@@ -83,7 +94,9 @@
                      options:kNilOptions
                      error:&error];
     
-    NSLog(@"json%@",json);
+   // NSLog(@"json%@",json);
+    
+    NSLog(@"extactDataFromJson");
 
     for (NSDictionary *personDesc in json) {
 
@@ -97,11 +110,13 @@
                 if (person!=nil) {
                     [_personsWithNewImageUrl addObject:person];
                 }
-          
+        
+                int recordsInSync = [Person recordsInSync:_syncVersion InManagedObjectContext:self.managedObjectContext];
+        
+                NSLog(@"recordsInSync%i", recordsInSync);
                 
-                if ([Person recordsInSync:_syncVersion InManagedObjectContext:self.managedObjectContext]==json.count) {
+                if (recordsInSync==json.count) {
                     [Person deleteRecordsNotInCurrent:_syncVersion InManagedObjectContext:self.managedObjectContext];
-                    [_dataReloadDelegate createUpdateDoneNotification];
                 }
     
    
@@ -115,94 +130,59 @@
 }
 -(void)updateImagesInDB {
     
+    NSLog(@"updateImagesInDB");
+    
+    
     dispatch_async(dispatch_get_global_queue(
                                              DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
+         NSLog(@"updateImagesInDB -INSIDE GUEUE");
     [_personImages enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop) {
         //Here: key = person.email ; obj = image
         [Person updatePersonWithEmail:key newImage:obj inManagedObjectContext:self.managedObjectContext syncVersion:_syncVersion ];
         
     }];
-        
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            [_dataReloadDelegate updateViewAfterSync];
+
+        });
         
     });
     
-    
-   // [_dataReloadDelegate createUpdateDoneNotification];
-    
+     
 }
 -(void) loadNewImages
 {
-   _personImages = [NSMutableDictionary dictionary];
-    
-    for (Person * person in _personsWithNewImageUrl) {
-        dispatch_async(dispatch_get_global_queue(
-                                                 DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-         
+    NSLog(@"loadNewImages");
+    if (_personsWithNewImageUrl.count == 0) {
+        [self sentEventAllImagesLoaded];
+    } else {
+        _personImages = [NSMutableDictionary dictionary];
+        
+        for (Person * person in _personsWithNewImageUrl) {
+            dispatch_async(dispatch_get_global_queue(
+                                                     DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                
                 UIImage * image = [self loadImageFromURL:person.url];
-
-            
-            dispatch_async(dispatch_get_main_queue(), ^(){
                 
-                [_personImages setObject:image forKey:person.email];
                 
-                if (_personImages.count == _personsWithNewImageUrl.count) {
-                    [self sentEventAllImagesLoaded];
-                }  
+                dispatch_async(dispatch_get_main_queue(), ^(){
+                    
+                    [_personImages setObject:image forKey:person.email];
+                    
+                    if (_personImages.count == _personsWithNewImageUrl.count) {
+                        [self sentEventAllImagesLoaded];
+                    }
+                    
+                });
                 
             });
-            
-        });
+
+        }
     }
         
 }
 
-
-- (void)extactDataFromJsonWithImages:(NSData *)responseData {
-    
-    NSError* error;
-    NSArray* json = [NSJSONSerialization
-                     JSONObjectWithData:responseData
-                     options:kNilOptions
-                     error:&error];
-    
-    NSLog(@"json%@",json);
-    
-    
-    
-    
-    for (NSDictionary *personDesc in json) {
-        
-        dispatch_async(dispatch_get_global_queue(
-                                                 DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-            UIImage * image = [self loadImageFromURL:[personDesc objectForKey:@"avatar_url"]];
-            
-            [Person insertUpdatePerson:[personDesc objectForKey:@"name"]
-                             withEmail:[personDesc objectForKey:@"email"]
-                              imageUrl:[personDesc objectForKey:@"avatar_url"]
-                                 Image:image
-                inManagedObjectContext:self.managedObjectContext
-                           syncVersion:_syncVersion];
-            
-            dispatch_async(dispatch_get_main_queue(), ^(){
-                
-                if ([Person recordsInSync:_syncVersion InManagedObjectContext:self.managedObjectContext]==json.count) {
-                    [Person deleteRecordsNotInCurrent:_syncVersion InManagedObjectContext:self.managedObjectContext];
-                    [_dataReloadDelegate createUpdateDoneNotification];
-                }
-                
-                
-                
-            });
-            
-        });
-        
-        
-    }
-    
-    
-}
 -(UIImage*) loadImageFromURL:(NSString*) url
 {
     NSURL *nsurl = [NSURL URLWithString:url];
