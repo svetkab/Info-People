@@ -31,18 +31,18 @@
     // Update the user interface for the detail item.
 
     if (self.detailItem) {
-        self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"email"] description];
+        self.emailLabel.text = [[self.detailItem valueForKey:@"email"] description];
+        self.nameLabel.text = [[self.detailItem valueForKey:@"name"] description];
         
         UIImage * img = [self.detailItem valueForKey:@"image"] ;
-        //
-        UIImageView * imgv = [[UIImageView alloc] initWithImage:img];
         
-        float delta = self.view.frame.size.width/img.size.width;
+        _imgv = [[UIImageView alloc] initWithImage:img];
         
-        [imgv setFrame:CGRectMake(0, 0, img.size.width*delta, img.size.height*delta)];
+        float delta = (self.view.frame.size.width/img.size.width)*0.65;
         
-        
-        [self.view addSubview:imgv];
+        [_imgv setFrame:CGRectMake(10.0, 10.0, img.size.width*delta, img.size.height*delta)];
+   
+        [self.view addSubview:_imgv];
     }
 }
 
@@ -59,4 +59,27 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidUnload {
+    [self setNameLabel:nil];
+    [self setEmailLabel:nil];
+    [super viewDidUnload];
+}
+- (void)adjustOrientation
+{
+    if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
+        [_imgv setFrame:CGRectMake(10.0, 10.0, _imgv.frame.size.width, _imgv.frame.size.height)];
+    } else {
+        [_imgv setFrame:CGRectMake(10.0, 10.0, _imgv.frame.size.width, _imgv.frame.size.height)];
+    }
+}
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self adjustOrientation];
+}
+
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [self adjustOrientation];
+}
 @end
