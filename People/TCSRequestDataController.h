@@ -11,7 +11,7 @@
 
 @protocol DataReloadDelegate <NSObject>
 
--(void) createUpdateDoneNotification;
+-(void) updateViewAfterSync;
 -(void) indicateconnectionProblem:(int)reconnectionInterval;
 @end
 
