@@ -39,7 +39,7 @@
             [match setName:name];
             
             
-            if (match.url != url) {
+            if (![match.url isEqualToString:url]) {
                 person = match;
             }
             
