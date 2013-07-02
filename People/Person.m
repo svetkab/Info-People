@@ -2,7 +2,7 @@
 //  Person.m
 //  People
 //
-//  Created by Svetlana Brodskaya on 6/28/13.
+//  Created by Svetlana Brodskaya on 7/1/13.
 //  Copyright (c) 2013 Svetlana Brodskaya. All rights reserved.
 //
 
@@ -14,8 +14,9 @@
 @dynamic email;
 @dynamic image;
 @dynamic name;
-@dynamic url;
 @dynamic sync;
 @dynamic timeStamp;
+@dynamic url;
+@dynamic imageSync;
 
 @end
