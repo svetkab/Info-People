@@ -48,7 +48,16 @@
 
     }
 }
-
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    
+    if (editing) {
+        [_syncButton setEnabled:NO];
+    } else {
+        [_syncButton setEnabled:YES];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -225,13 +234,23 @@
     
     UIImage * img = [object valueForKey:@"image"];
     
+    if (img==nil) {
+        img = [UIImage imageNamed:@"blck-36.png"];
+    }
+    
     [cell.imageView setImage:img];
 }
 
 
 -(void)updateViewAfterSync
 {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    NSLog(@"updateViewAfterSync");
+    
+    
+    
+    self.fetchedResultsController = nil;
+    
+    [self.tableView reloadData];
     
     _syncButton.title = @"Sync";
     [_syncButton setEnabled:YES];
@@ -239,9 +258,14 @@
     _allowEditRows = YES;
     [self.editButtonItem setEnabled:YES];
     
-    self.fetchedResultsController = nil;
+
+    NSLog(@"reloadDataDONE");
     
-    [self.tableView reloadData];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"sync"] intValue] == 0){
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
+
+    [[NSUserDefaults standardUserDefaults] setInteger:1  forKey: @"sync"];
 }
 -(void) indicateconnectionProblem
 {

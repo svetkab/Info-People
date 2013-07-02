@@ -40,10 +40,11 @@
     
     [loadProccessDesc setTextColor:[UIColor whiteColor]];
     
-    loadProccessDesc.font = [UIFont fontWithName:@"Chalkduster" size:36];
+    loadProccessDesc.font = [UIFont fontWithName:@"Chalkduster" size:32];
     
+    [loadProccessDesc setTextAlignment:UITextAlignmentCenter];
     
-    [loadProccessDesc setBackgroundColor:[UIColor redColor]];
+    [loadProccessDesc setBackgroundColor:[UIColor clearColor]];
     
     [self.view addSubview:loadProccessDesc];
 

@@ -36,6 +36,10 @@
         
         UIImage * img = [self.detailItem valueForKey:@"image"] ;
         
+        if (img==nil) {
+            img = [UIImage imageNamed:@"blck-36.png"];
+        }
+        
         _imgv = [[UIImageView alloc] initWithImage:img];
         
         float delta = (self.view.frame.size.width/img.size.width)*0.65;
