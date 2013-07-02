@@ -39,7 +39,7 @@
             [match setName:name];
             
             
-            if (![match.url isEqualToString:url]) {
+            if (![match.url isEqualToString:url] || [match.imageSync isEqualToNumber:[NSNumber numberWithBool:NO]] || (match.image == nil)) {
                 person = match;
             }
             
@@ -70,7 +70,7 @@
         [person setTimeStamp:[NSDate date]];
         
         
-        NSLog(@"INSERTING name: %@",name);
+     //   NSLog(@"INSERTING name: %@",name);
         
         if (![context save:&error]) {
             // Update to handle the error appropriately.
@@ -183,7 +183,7 @@
         [person setTimeStamp:[NSDate date]];
         
         
-        NSLog(@"INSERTING name: %@",name);
+      //  NSLog(@"INSERTING name: %@",name);
         
         if (![context save:&error]) {
             // Update to handle the error appropriately.
