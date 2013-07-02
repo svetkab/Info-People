@@ -31,7 +31,8 @@
 
 @property (strong, nonatomic) NSMutableArray * personsWithNewImageUrl;
 
-@property (strong, nonatomic) NSMutableDictionary * personImages;
+@property (strong, nonatomic) NSMutableArray * peopleWithCorruptImages;
+
 
 -(void) loadData;
 
