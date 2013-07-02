@@ -13,5 +13,5 @@
 
 @property (nonatomic, assign) int reconnectionInterval;
 
-- (void) setNextCheck;
+- (void) nextReconnectionInterval;
 @end

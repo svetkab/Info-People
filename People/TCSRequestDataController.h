@@ -12,6 +12,7 @@
 @protocol DataReloadDelegate <NSObject>
 
 -(void) updateViewAfterSync;
+-(void) updateViewBeforeSync;
 -(void) indicateconnectionProblem;
 @end
 

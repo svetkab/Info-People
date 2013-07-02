@@ -34,7 +34,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"PROBLEM" message:@"Online data is not available. Could be a connection problem." delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil];
         [alert show];
     }
-
+    [_dataReloadDelegate  updateViewBeforeSync];
     _reTry = YES;
     int maxSync = [Person maxSyncInManagedObjectContext:self.managedObjectContext];
     
@@ -73,7 +73,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^(){
                         
                         _reTry = YES;
-                        [_urlReachabilityWatcher setNextCheck];
+                        [_urlReachabilityWatcher nextReconnectionInterval];
                         
                         [_dataReloadDelegate indicateconnectionProblem];
                         [NSTimer scheduledTimerWithTimeInterval:_urlReachabilityWatcher.reconnectionInterval target:self
@@ -100,8 +100,6 @@
                      options:kNilOptions
                      error:&error];
     
-   // NSLog(@"json%@",json);
-    
     NSLog(@"extactDataFromJson");
 
     for (NSDictionary *personDesc in json) {
@@ -119,7 +117,7 @@
         
                 int recordsInSync = [Person recordsInSync:_syncVersion InManagedObjectContext:self.managedObjectContext];
         
-                NSLog(@"recordsInSync%i", recordsInSync);
+            //    NSLog(@"recordsInSync%i", recordsInSync);
                 
                 if (recordsInSync==json.count) {
                     [Person deleteRecordsNotInCurrent:_syncVersion InManagedObjectContext:self.managedObjectContext];
@@ -128,7 +126,7 @@
    
     }
     
-    [self loadNewImages];
+    [self loadNewImagesForPeople:_personsWithNewImageUrl];
     
 }
 - (void)sentEventAllImagesLoaded {
@@ -163,26 +161,20 @@
 
         });
         
-    });
-
-    //variant loadNewImages000
-    
-    //[_dataReloadDelegate updateViewAfterSync];
-    
-    
+    });  
 }
--(void) loadNewImages
+-(void) loadNewImagesForPeople:(NSArray*)peopleArray
 {
     _peopleWithCorruptImages = [NSMutableArray array];
     
-    NSLog(@"loadNewImages");
+    NSLog(@"loadNewImagesForPeople");
     
-    __block int personImagesCount = 0;
-    if (_personsWithNewImageUrl.count == 0) {
+    __block volatile int personImagesCount = 0;
+    if (peopleArray.count == 0) {
         [self sentEventAllImagesLoaded];
     } else {
         
-        for (Person * person in _personsWithNewImageUrl) {
+        for (Person * person in peopleArray) {
             dispatch_async(dispatch_get_global_queue(
                                                      DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
@@ -207,8 +199,11 @@
                 dispatch_async(dispatch_get_main_queue(), ^(){
                     
                     
-                    personImagesCount=personImagesCount+1;
-                    if (personImagesCount == _personsWithNewImageUrl.count) {
+                    //personImagesCount=personImagesCount+1;
+                    //to be more secure
+                    __sync_fetch_and_add( &personImagesCount, 1 );
+                    
+                    if (personImagesCount == peopleArray.count) {
                         [self sentEventAllImagesLoaded];
                     }
                     
@@ -220,68 +215,6 @@
     }
     
 }
-
-//why it slow down GUI?
-/*
--(void) loadNewImages000
-{
-    _peopleWithCorruptImages = [NSMutableArray array];
-    
-    NSLog(@"loadNewImages");
-    if (_personsWithNewImageUrl.count == 0) {
-        [self sentEventAllImagesLoaded];
-    } else {
-
-        
-        dispatch_queue_t loadImagesQueue = dispatch_queue_create( "com.tuxedocat.people.loadImages", NULL );
-        
-        int imagesToUpdate = _personsWithNewImageUrl.count;
-        
-        __block int loopCount = 0;
-        
-        dispatch_apply(imagesToUpdate, loadImagesQueue, ^(size_t i){
-           
-            loopCount = loopCount + 1;
-
-            NSLog(@"BEFORE _personsWithNewImageUrl.count %i", _personsWithNewImageUrl.count);
-            NSLog(@"loopCount %zi", loopCount);
-            
-               
-                Person * person = [_personsWithNewImageUrl objectAtIndex:i];
-                
-                 UIImage * image = [self loadImageFromURL:person.url];
-                
-                
-                if (image==nil) {
-                    [_peopleWithCorruptImages addObject:person];
-                    
-                    image = [[UIImage alloc] init];
-                }
-                
-                NSLog(@"person.email:  %@",person.email);
-                
-               ///
-            [Person updatePersonWithEmail:person.email newImage:image inManagedObjectContext:self.managedObjectContext syncVersion:_syncVersion ];
-            
-            NSLog(@"_personsWithNewImageUrl.count %i", _personsWithNewImageUrl.count);
-            
-            if (_personsWithNewImageUrl.count == loopCount) {
-                [self sentEventAllImagesLoaded];
-            }
-          
-
-
-        }
-                 
-        );
-                       
-        
-        dispatch_release(loadImagesQueue);
-        
-    }
-        
-}
-*/
 -(UIImage*) loadImageFromURL:(NSString*) url
 {
     

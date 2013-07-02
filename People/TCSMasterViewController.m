@@ -40,7 +40,7 @@
     
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"sync"] intValue] == 0) {
         
-        [self syncWithSource:nil];
+        [_requestDataController loadData];
         
         _welcomeViewController = [[TCSWelcomeViewController alloc] init];
         
@@ -275,12 +275,15 @@
     [self.editButtonItem setEnabled:YES];
 
 }
-- (IBAction)syncWithSource:(id)sender {
-    
+-(void) updateViewBeforeSync
+{
     _allowEditRows = NO;
     [self.editButtonItem setEnabled:NO];
     _syncButton.title = @"Sync In Proccess";
     [_syncButton setEnabled:NO];
+}
+- (IBAction)syncWithSource:(id)sender {
+    
     [_requestDataController loadData];
 }
 @end

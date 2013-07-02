@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2902E792177E6C2D003B5B70 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2902E791177E6C2D003B5B70 /* SystemConfiguration.framework */; };
 		2902E799177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902E798177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m */; };
+		2902E7A21781DD9A003B5B70 /* TCSWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902E7A11781DD9A003B5B70 /* TCSWelcomeViewController.m */; };
+		2902E7A61781FE00003B5B70 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902E7A51781FE00003B5B70 /* Person.m */; };
 		292FA5E6177DFD7400529411 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 292FA5E5177DFD7400529411 /* UIKit.framework */; };
 		292FA5E8177DFD7400529411 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 292FA5E7177DFD7400529411 /* Foundation.framework */; };
 		292FA5EA177DFD7400529411 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 292FA5E9177DFD7400529411 /* CoreGraphics.framework */; };
@@ -30,7 +32,7 @@
 		292FA61D177DFD7500529411 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 292FA61B177DFD7500529411 /* InfoPlist.strings */; };
 		292FA620177DFD7500529411 /* PeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FA61F177DFD7500529411 /* PeopleTests.m */; };
 		292FA638177E06AB00529411 /* Person+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FA637177E06AB00529411 /* Person+CRUD.m */; };
-		29DEEE7A177E24990048FB60 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DEEE79177E24990048FB60 /* Person.m */; };
+		298C767617828A70000113BD /* blck-36.png in Resources */ = {isa = PBXBuildFile; fileRef = 298C767517828A70000113BD /* blck-36.png */; };
 		29DEEE7D177E48F60048FB60 /* TCSStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DEEE7C177E48F60048FB60 /* TCSStartViewController.m */; };
 		29DEEE80177E4F3C0048FB60 /* TCSRequestDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DEEE7F177E4F3B0048FB60 /* TCSRequestDataController.m */; };
 /* End PBXBuildFile section */
@@ -49,6 +51,11 @@
 		2902E791177E6C2D003B5B70 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2902E797177E93B5003B5B70 /* TCSUrlReachabilityWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSUrlReachabilityWatcher.h; sourceTree = "<group>"; };
 		2902E798177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSUrlReachabilityWatcher.m; sourceTree = "<group>"; };
+		2902E7A01781DD99003B5B70 /* TCSWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSWelcomeViewController.h; sourceTree = "<group>"; };
+		2902E7A11781DD9A003B5B70 /* TCSWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSWelcomeViewController.m; sourceTree = "<group>"; };
+		2902E7A31781FD79003B5B70 /* People 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "People 3.xcdatamodel"; sourceTree = "<group>"; };
+		2902E7A41781FE00003B5B70 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		2902E7A51781FE00003B5B70 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		292FA5E2177DFD7400529411 /* People.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = People.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		292FA5E5177DFD7400529411 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		292FA5E7177DFD7400529411 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -77,9 +84,8 @@
 		292FA61F177DFD7500529411 /* PeopleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeopleTests.m; sourceTree = "<group>"; };
 		292FA636177E06AB00529411 /* Person+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Person+CRUD.h"; sourceTree = "<group>"; };
 		292FA637177E06AB00529411 /* Person+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Person+CRUD.m"; sourceTree = "<group>"; };
+		298C767517828A70000113BD /* blck-36.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blck-36.png"; sourceTree = "<group>"; };
 		29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "People 2.xcdatamodel"; sourceTree = "<group>"; };
-		29DEEE78177E24990048FB60 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
-		29DEEE79177E24990048FB60 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		29DEEE7B177E48F60048FB60 /* TCSStartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSStartViewController.h; sourceTree = "<group>"; };
 		29DEEE7C177E48F60048FB60 /* TCSStartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSStartViewController.m; sourceTree = "<group>"; };
 		29DEEE7E177E4F3B0048FB60 /* TCSRequestDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSRequestDataController.h; sourceTree = "<group>"; };
@@ -163,6 +169,8 @@
 				29DEEE7F177E4F3B0048FB60 /* TCSRequestDataController.m */,
 				2902E797177E93B5003B5B70 /* TCSUrlReachabilityWatcher.h */,
 				2902E798177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m */,
+				2902E7A01781DD99003B5B70 /* TCSWelcomeViewController.h */,
+				2902E7A11781DD9A003B5B70 /* TCSWelcomeViewController.m */,
 			);
 			path = People;
 			sourceTree = "<group>";
@@ -170,6 +178,7 @@
 		292FA5EE177DFD7400529411 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				298C767517828A70000113BD /* blck-36.png */,
 				292FA5EF177DFD7400529411 /* People-Info.plist */,
 				292FA5F0177DFD7400529411 /* InfoPlist.strings */,
 				292FA5F3177DFD7400529411 /* main.m */,
@@ -203,9 +212,9 @@
 		292FA629177E007500529411 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				29DEEE78177E24990048FB60 /* Person.h */,
-				29DEEE79177E24990048FB60 /* Person.m */,
 				292FA602177DFD7400529411 /* People.xcdatamodeld */,
+				2902E7A41781FE00003B5B70 /* Person.h */,
+				2902E7A51781FE00003B5B70 /* Person.m */,
 				292FA636177E06AB00529411 /* Person+CRUD.h */,
 				292FA637177E06AB00529411 /* Person+CRUD.m */,
 			);
@@ -289,6 +298,7 @@
 				292FA5FC177DFD7400529411 /* Default@2x.png in Resources */,
 				292FA5FE177DFD7400529411 /* Default-568h@2x.png in Resources */,
 				292FA601177DFD7400529411 /* MainStoryboard.storyboard in Resources */,
+				298C767617828A70000113BD /* blck-36.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,10 +339,11 @@
 				292FA607177DFD7400529411 /* TCSMasterViewController.m in Sources */,
 				292FA60A177DFD7400529411 /* TCSDetailViewController.m in Sources */,
 				292FA638177E06AB00529411 /* Person+CRUD.m in Sources */,
-				29DEEE7A177E24990048FB60 /* Person.m in Sources */,
 				29DEEE7D177E48F60048FB60 /* TCSStartViewController.m in Sources */,
 				29DEEE80177E4F3C0048FB60 /* TCSRequestDataController.m in Sources */,
 				2902E799177E93B5003B5B70 /* TCSUrlReachabilityWatcher.m in Sources */,
+				2902E7A21781DD9A003B5B70 /* TCSWelcomeViewController.m in Sources */,
+				2902E7A61781FE00003B5B70 /* Person.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,10 +543,11 @@
 		292FA602177DFD7400529411 /* People.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				2902E7A31781FD79003B5B70 /* People 3.xcdatamodel */,
 				29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */,
 				292FA603177DFD7400529411 /* People.xcdatamodel */,
 			);
-			currentVersion = 29DEEE77177E239E0048FB60 /* People 2.xcdatamodel */;
+			currentVersion = 2902E7A31781FD79003B5B70 /* People 3.xcdatamodel */;
 			path = People.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -10,7 +10,7 @@
 
 @implementation TCSUrlReachabilityWatcher
 
-- (void) setNextCheck
+- (void) nextReconnectionInterval
 {
     switch (_reconnectionInterval) {
         case 0:
@@ -19,18 +19,11 @@
         case 2:
             _reconnectionInterval = 4;
             break;
-        case 4:
-            _reconnectionInterval = 8;
-            break;
-        case 8:
-            _reconnectionInterval = 60;
-            break;
             
         default:
-            _reconnectionInterval = 360;
+            _reconnectionInterval = 4;
             break;
     }
-    
     
 }
 
